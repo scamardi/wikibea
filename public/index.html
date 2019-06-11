@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
+
+    <script>
+        // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
+        const contract_address = "0xdE467d717E529Ba9d73048Eb306c67AC4B0Ae54E"
+        const abi = [
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "artigosCount",
+            "outputs": [
+                {
+                "name": "",
+                "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                "name": "",
+                "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [
+                {
+                "name": "",
+                "type": "uint256"
+                }
+            ],
+            "name": "artigos",
+            "outputs": [
+                {
+                "name": "id",
+                "type": "uint256"
+                },
+                {
+                "name": "titulo",
+                "type": "string"
+                },
+                {
+                "name": "corpo",
+                "type": "string"
+                },
+                {
+                "name": "autor",
+                "type": "address"
+                },
+                {
+                "name": "versao",
+                "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            },
+            {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+            },
+            {
+            "constant": false,
+            "inputs": [
+                {
+                "name": "_titulo",
+                "type": "string"
+                },
+                {
+                "name": "_corpo",
+                "type": "string"
+                }
+            ],
+            "name": "adicionaArtigo",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": false,
+            "inputs": [
+                {
+                "name": "_id",
+                "type": "uint256"
+                },
+                {
+                "name": "_titulo",
+                "type": "string"
+                },
+                {
+                "name": "_corpo",
+                "type": "string"
+                }
+            ],
+            "name": "alterarArtigo",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+            },
+            {
+            "constant": true,
+            "inputs": [
+                {
+                "name": "id",
+                "type": "uint256"
+                }
+            ],
+            "name": "getArtigo",
+            "outputs": [
+                {
+                "name": "",
+                "type": "uint256"
+                },
+                {
+                "name": "",
+                "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+            }
+        ]
+        
+        const eth = new Eth(new Eth.HttpProvider('http://127.0.0.1:7545'))
+        
+        // instancia um contrato
+        const conntrato = eth.contract(abi).at(contract_address)
+        
+        async function populaTabelaArtigos() {
+          // obtem o total de artigos
+          const totalArtigos = await contrato.getTotalArtigos()
+       
+          // se achar mais de um artigo, popula tabela com artigos
+          if (totalArtigos > 0) {
+            for (let i = 1; i <= totalArtigos; i++) {
+              const element = await contrato.artigo(i)
+              
+              // adiciona trecho html 
+              // $("artigos").append("")
+            }
+            
+          }
+        
+        }
+        
+    </script>
+
+</head>
+<body class="body">
+    <nav class="nav-margin">
+        <ul class="nav nav-pills">
+            <li role="presentation" >
+                <a class="nav-link" href="index.html" role="button" aria-haspopup="true" aria-expanded="false">
+                    Home
+                </a>
+            </li>
+            <li role="presentation" >
+                <a class="nav-link" href="my-pages.html" role="button" aria-haspopup="true" aria-expanded="false">
+                    My Pages and Contributions
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-header">Last Page Title</h3>
+            </div>
+
+            <div class="panel-body flexbox content">
+                <div class="content-text">
+                    <div id="message"></div>
+                <div class="img">
+                    <img class="img-fluid" src="img/eye.jpg">
+                    <p class="img-desc">Aenean fermentum lobortis lobortis. Phasellus ut egestas massa. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec tincidunt est at turpis blandit, non gravida nisi consectetur. Maecenas ullamcorper aliquam interdum.</p>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">All Pages</h3>
+            </div>
+
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="button-cell"></th>
+                                <th>Page Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="button-cell"><button class="button"><a href="edit.html">Edit</a></button></td>
+                                <td class="page-title-cell"><a href="page.html">Page Title</a></td>
+                            </tr>
+                            <tr>
+                                <td class="button-cell"><button class="button"><a href="edit.html">Edit</a></button></td>
+                                <td class="page-title-cell"><a href="page.html">Page Title</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>            
+        </div>
+    </div>
+</body>
+
+
+</html>
