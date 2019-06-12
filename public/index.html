@@ -23,7 +23,8 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contractAddress = "0x7167471321a4131c095c60ae762800F315DF2Af9"
+        const contractAddress = "0x93e7a1d7bd807e9b4fd6598cA25beeD7b76c9AC4"
+        const myAddress = "0x5abF799Fb0897fbD1a5DB323C1BEF90dcFC7bd22"
         const abi = [
         {
         "constant": true,
@@ -173,7 +174,12 @@
         }
     ]
         const eth = new Eth(new Eth.HttpProvider('http://127.0.0.1:7545'))
-        
+        const params = {
+            from: myAddress,
+            to: myAddress,
+            value: '1',
+            gas: '1'
+        }
         // instancia um contrato
         const contrato = eth.contract(abi).at(contractAddress)
 
@@ -199,8 +205,8 @@
                 for (let i = 1; i <= totalArtigos; i++) {
                     const element = await contrato.artigos(i)
                        
-                    console.log('autor: ', element.autor)
-                    console.log('endereco: ', contractAddress)
+                    //console.log('autor: ', element.autor)
+                    //console.log('endereco: ', contractAddress)
 
                     if (element.autor == contractAddress) {
                         // adiciona trecho html na secao de contribuicoes 
@@ -209,7 +215,7 @@
                         artigosHTML += criaLinhaTabelaArtigos(element.titulo)
                     }
 
-                    console.log('artigo: ', element)
+                    //console.log('artigo: ', element)
                     
                 }
             }
@@ -221,8 +227,23 @@
             document.getElementById('artigosContribuicao').innerHTML = artigosContribuicaoHTML
         }
 
-        async function adicionarArtigo() {
+        function adicionarArtigo() {
+            titulo =  document.getElementById('tituloArtigo').value
+            corpo =  document.getElementById('corpoArtigo').value
+            
+            console.log('titulo artigo adicionado: ', titulo)
+            console.log('corpo artigo adicionado: ', corpo)
 
+            contrato.adicionaArtigo(titulo, corpo, {from: myAddress})
+            .then((err, result) => {
+                if (err) {
+                    console.log('erro ao adicionar artigo: ', err)
+                    return
+                }
+                console.log('recibo transacao: ', result)
+            })
+
+            
         }
 
         populaTabelaArtigos()
@@ -247,9 +268,9 @@
                 <div class="content-text content-table">
                               
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+                        <input type="text" id="tituloArtigo" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button">Salvar</button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="adicionarArtigo()">Salvar</button>
                             <button class="btn btn-outline-secondary" type="button">Novo</button>
                         </div>
                     </div>
@@ -257,7 +278,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Corpo do Artigo</span>
                         </div>
-                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                        <textarea id="corpoArtigo" class="form-control" aria-label="With textarea"></textarea>
                     </div>
                 </div>
             </div>            
