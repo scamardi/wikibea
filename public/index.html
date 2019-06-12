@@ -179,9 +179,9 @@
 
         function criaLinhaTabelaArtigos(pageTitle, isAutor = false) {
             if (isAutor) {
-                return '<tr><td class="button-cell"><button class="button"><a href="#">Edit</a></button></td><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+                return '<tr><td><a href="#">Edit</a><a href="#">'+ pageTitle +'</a></td></tr>'
             } else {
-                return '<tr><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+                return '<tr><td><a href="#">'+ pageTitle +'</a></td></tr>'
             }
         }
         
@@ -189,27 +189,36 @@
             // obtem o total de artigos
             let totalArtigos = await contrato.getTotalArtigos()
             totalArtigos = totalArtigos[0].words[0]
+            
+            // cria tabela
+            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
+            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
 
             // se achar mais de um artigo, popula tabela com artigos
             if (totalArtigos > 0) {
-            for (let i = 1; i <= totalArtigos; i++) {
-                const element = await contrato.artigos(i)
-                
-                console.log('autor: ', )
+                for (let i = 1; i <= totalArtigos; i++) {
+                    const element = await contrato.artigos(i)
+                       
+                    console.log('autor: ', element.autor)
+                    console.log('endereco: ', contractAddress)
 
-                if (element.autor == contractAddress) {
-                    // adiciona trecho html na secao de contribuicoes 
-                    document.getElementById('artigosContribuicao').innerHTML += criaLinhaTabelaArtigos(element.titulo, true)
-                } else {
-                    document.getElementById('artigos').innerHTML += criaLinhaTabelaArtigos(element.titulo)
+                    if (element.autor == contractAddress) {
+                        // adiciona trecho html na secao de contribuicoes 
+                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, true)
+                    } else {
+                        artigosHTML += criaLinhaTabelaArtigos(element.titulo)
+                    }
+
+                    console.log('artigo: ', element)
+                    
                 }
+            }
 
-                console.log('artigo: ', element)
-                
-            }
-            
-            }
-        
+            artigosHTML += '</tbody></table>'
+            artigosContribuicaoHTML += '</tbody></table>'
+
+            document.getElementById('artigos').innerHTML = artigosHTML 
+            document.getElementById('artigosContribuicao').innerHTML = artigosContribuicaoHTML
         }
 
         async function adicionarArtigo() {
@@ -236,6 +245,7 @@
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
+                              
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
                         <div class="input-group-append">
@@ -256,53 +266,34 @@
     </div>
 
     <div class="flexbox general-margin"> 
-            <div class="panel panel-warning table-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-header">Todos os Artigos</h3>
-                </div>
-                <div class="panel-body flexbox content">
-                    <div class="content-text content-table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="button-cell"></th>
-                                    <th>Título</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <div id="artigosContribuicao">
-    
-                                </div>          
-                            </tbody>
-                        </table>
-                    </div>
-                </div>            
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Todos os Artigos</h3>
             </div>
-        </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <div id="artigos">
 
-        <div class="flexbox general-margin"> 
-            <div class="panel panel-warning table-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-header">Contribuições</h3>
+                    </div>          
                 </div>
-                <div class="panel-body flexbox content">
-                    <div class="content-text content-table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="button-cell"></th>
-                                    <th>Título</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <div id="artigosContribuicao">
-                                </div>          
-                            </tbody>
-                        </table>
-                    </div>
-                </div>            
-            </div>
+            </div>            
         </div>
+    </div>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Contribuições</h3>
+            </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <div id="artigosContribuicao">
+
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
 
         <div>
             <footer>
