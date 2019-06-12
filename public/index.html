@@ -22,188 +22,262 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contract_address = "0xdE467d717E529Ba9d73048Eb306c67AC4B0Ae54E"
+        const contractAddress = "0x7167471321a4131c095c60ae762800F315DF2Af9"
         const abi = [
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "artigosCount",
+        "outputs": [
             {
-            "constant": true,
-            "inputs": [],
-            "name": "artigosCount",
-            "outputs": [
-                {
-                "name": "",
-                "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [],
-            "name": "owner",
-            "outputs": [
-                {
-                "name": "",
-                "type": "address"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [
-                {
-                "name": "",
-                "type": "uint256"
-                }
-            ],
-            "name": "artigos",
-            "outputs": [
-                {
-                "name": "id",
-                "type": "uint256"
-                },
-                {
-                "name": "titulo",
-                "type": "string"
-                },
-                {
-                "name": "corpo",
-                "type": "string"
-                },
-                {
-                "name": "autor",
-                "type": "address"
-                },
-                {
-                "name": "versao",
-                "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-            },
-            {
-            "inputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "constructor"
-            },
-            {
-            "constant": false,
-            "inputs": [
-                {
-                "name": "_titulo",
-                "type": "string"
-                },
-                {
-                "name": "_corpo",
-                "type": "string"
-                }
-            ],
-            "name": "adicionaArtigo",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": false,
-            "inputs": [
-                {
-                "name": "_id",
-                "type": "uint256"
-                },
-                {
-                "name": "_titulo",
-                "type": "string"
-                },
-                {
-                "name": "_corpo",
-                "type": "string"
-                }
-            ],
-            "name": "alterarArtigo",
-            "outputs": [],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-            },
-            {
-            "constant": true,
-            "inputs": [
-                {
-                "name": "id",
-                "type": "uint256"
-                }
-            ],
-            "name": "getArtigo",
-            "outputs": [
-                {
-                "name": "",
-                "type": "uint256"
-                },
-                {
-                "name": "",
-                "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
+            "name": "",
+            "type": "uint256"
             }
-        ]
-        
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+            "name": "",
+            "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+        ],
+        "name": "artigos",
+        "outputs": [
+            {
+            "name": "id",
+            "type": "uint256"
+            },
+            {
+            "name": "titulo",
+            "type": "string"
+            },
+            {
+            "name": "corpo",
+            "type": "string"
+            },
+            {
+            "name": "autor",
+            "type": "address"
+            },
+            {
+            "name": "versao",
+            "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+        },
+        {
+        "constant": false,
+        "inputs": [
+            {
+            "name": "_titulo",
+            "type": "string"
+            },
+            {
+            "name": "_corpo",
+            "type": "string"
+            }
+        ],
+        "name": "adicionaArtigo",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+        },
+        {
+        "constant": false,
+        "inputs": [
+            {
+            "name": "_id",
+            "type": "uint256"
+            },
+            {
+            "name": "_titulo",
+            "type": "string"
+            },
+            {
+            "name": "_corpo",
+            "type": "string"
+            }
+        ],
+        "name": "alterarArtigo",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [
+            {
+            "name": "_id",
+            "type": "uint256"
+            }
+        ],
+        "name": "getArtigo",
+        "outputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            },
+            {
+            "name": "",
+            "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "getTotalArtigos",
+        "outputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        }
+    ]
         const eth = new Eth(new Eth.HttpProvider('http://127.0.0.1:7545'))
         
         // instancia um contrato
-        const conntrato = eth.contract(abi).at(contract_address)
+        const contrato = eth.contract(abi).at(contractAddress)
+
+        function criaLinhaTabelaArtigos(pageTitle, isAutor = false) {
+            if (isAutor) {
+                return '<tr><td class="button-cell"><button class="button"><a href="#">Edit</a></button></td><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+            } else {
+                return '<tr><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+            }
+        }
         
         async function populaTabelaArtigos() {
-          // obtem o total de artigos
-          const totalArtigos = await contrato.getTotalArtigos()
-       
-          // se achar mais de um artigo, popula tabela com artigos
-          if (totalArtigos > 0) {
+            // obtem o total de artigos
+            let totalArtigos = await contrato.getTotalArtigos()
+            totalArtigos = totalArtigos[0].words[0]
+
+            // se achar mais de um artigo, popula tabela com artigos
+            if (totalArtigos > 0) {
             for (let i = 1; i <= totalArtigos; i++) {
-              const element = await contrato.artigo(i)
-              
-              // adiciona trecho html 
-              // $("artigos").append("")
+                const element = await contrato.artigos(i)
+                
+                console.log('autor: ', )
+
+                if (element.autor == contractAddress) {
+                    // adiciona trecho html na secao de contribuicoes 
+                    document.getElementById('artigosContribuicao').innerHTML += criaLinhaTabelaArtigos(element.titulo, true)
+                } else {
+                    document.getElementById('artigos').innerHTML += criaLinhaTabelaArtigos(element.titulo)
+                }
+
+                console.log('artigo: ', element)
+                
             }
             
-          }
+            }
         
         }
+
+        async function adicionarArtigo() {
+
+        }
+
+        populaTabelaArtigos()
+            .then(() => { console.log('foi') })
+            .catch((error) => { console.log('nao foi: ', error) })
         
     </script>
 
 </head>
 <body class="body">
     <nav class="nav-margin">
-        <h1>wikibea</h1>
+        
+        <h1>wikibea :v</h1>
     </nav>
 
-    <div class="container">
-        <div class="flexbox general-margin"> 
-            <div class="general-margin"> 
-                <div class="teste panel panel-warning">
-                    <div class="panel-heading">
-                        <h3 class="panel-header">hello</h3>
-                    </div>
-                    <div class="panel-body flexbox content">
-                        <div class="content-text">
-                            oieeeeeeeeeeeeeeeeeeee
-                        </div>
-                    </div>
-                </div>
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Todos Artigos</h3>
             </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="button-cell"></th>
+                                <th>Título</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div id="artigos">
+
+                            </div>          
+                        </tbody>
+                    </table>
+                </div>
+            </div>            
+>>>>>>> 708e2850bf182a845eddb9c8f74009e8b1a1f16d
         </div>
     </div>
+
+    <div class="flexbox general-margin"> 
+            <div class="panel panel-warning table-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-header">Contribuicoes</h3>
+                </div>
+                <div class="panel-body flexbox content">
+                    <div class="content-text content-table">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="button-cell"></th>
+                                    <th>Título</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <div id="artigosContribuicao">
+    
+                                </div>          
+                            </tbody>
+                        </table>
+                    </div>
+                </div>            
+            </div>
+        </div>
 </body>
 
 
