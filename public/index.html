@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
 
@@ -233,13 +234,41 @@
 </head>
 <body class="body">
     <nav class="nav-margin">
+
         <h1>wikibea :v</h1>
     </nav>
 
     <div class="flexbox general-margin"> 
         <div class="panel panel-warning table-panel">
             <div class="panel-heading">
-                <h3 class="panel-header">Todos Artigos</h3>
+                <h3 class="panel-header">Artigo</h3>
+            </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                              
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">Salvar</button>
+                            <button class="btn btn-outline-secondary" type="button">Novo</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Corpo do Artigo</span>
+                        </div>
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                </div>
+            </div>            
+
+        </div>
+    </div>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Todos os Artigos</h3>
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
@@ -252,19 +281,21 @@
     </div>
 
     <div class="flexbox general-margin"> 
-            <div class="panel panel-warning table-panel">
-                <div class="panel-heading">
-                    <h3 class="panel-header">Contribuicoes</h3>
-                </div>
-                <div class="panel-body flexbox content">
-                    <div class="content-text content-table">
-                        <div id="artigosContribuicao">
-
-                        </div>          
-                    </div>
-                </div>            
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Contribuições</h3>
             </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <div id="artigosContribuicao">
+
+                    </div>
+                </div>
+            </div>            
         </div>
+    </div>
+
+    <center>Endereço do Usuário: </center>
 </body>
 
 

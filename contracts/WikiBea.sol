@@ -1,19 +1,20 @@
 pragma solidity >=0.4.21 <0.6.0;
 
+// contrato da wiki
 contract WikiBea {
   
+  // objeto que compõem artigo
   struct artigo {
-  	uint id;
-  	string titulo;
-  	string corpo;
-  	address autor;
-  	uint versao;
+  	uint id;         // identificador do artigo
+  	string titulo;   // titulo do artigo
+  	string corpo;    // corpo do artigo
+  	address autor;   // autor do artigo
+  	uint versao;     // versão do artigo
   }
 
-  address public owner;
-
+  // contrutor do artigo / inicialização
   constructor() public {
-    owner = msg.sender;
+    // populando os contratos
     adicionaArtigo("titulo teste", "corpo teste");
     adicionaArtigo("titulo teste1", "corpo teste1");
     adicionaArtigo("titulo teste2", "corpo teste2");
@@ -23,25 +24,26 @@ contract WikiBea {
   // mapeando o artigo
   mapping(uint => artigo) public artigos;
 
+  // 
   uint public artigosCount;
 
-  // inicialização
-  // function WikiBea () public {}
-
+  // adiciona artigos na blockchain
   function adicionaArtigo (string memory _titulo, string memory _corpo) public {
-  	artigosCount ++;
-  	artigos[artigosCount] = artigo(artigosCount, _titulo, _corpo, msg.sender, 0);
+  	// 
+    artigosCount ++;
+  	
+    artigos[artigosCount] = artigo(artigosCount, _titulo, _corpo, msg.sender, 0);
   }
 
   function alterarArtigo (uint _id, string memory _titulo, string memory _corpo) public {
-  	// verifica se a pessoa que esta tentando alterar eh o autor
+  	// verifica se a pessoa que esta tentando alterar é o autor
   	require(artigos[_id].autor == msg.sender);
 
-  	// altera artigo
+  	// altera o artigo
   	artigos[_id].titulo = _titulo;
   	artigos[_id].corpo = _corpo;
 
-  	// versiona
+  	// versiona o artigo
   	artigos[_id].versao ++;
   }
 

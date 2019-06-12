@@ -2,6 +2,14 @@
     display: flex;
 }
 
+
+
+.teste {
+    height: 80%;
+    width: 80%;
+    position: absolute;     
+}
+
 .img {
     max-width: 20%;
     margin-top: 3%;
