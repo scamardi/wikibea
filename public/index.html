@@ -178,9 +178,9 @@
 
         function criaLinhaTabelaArtigos(pageTitle, isAutor = false) {
             if (isAutor) {
-                return '<tr><td class="button-cell"><button class="button"><a href="#">Edit</a></button></td><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+                return '<tr><td><a href="#">Edit</a><a href="#">'+ pageTitle +'</a></td></tr>'
             } else {
-                return '<tr><td class="page-title-cell"><a href="#">'+ pageTitle +'</a></td></tr>'
+                return '<tr><td><a href="#">'+ pageTitle +'</a></td></tr>'
             }
         }
         
@@ -188,27 +188,36 @@
             // obtem o total de artigos
             let totalArtigos = await contrato.getTotalArtigos()
             totalArtigos = totalArtigos[0].words[0]
+            
+            // cria tabela
+            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
+            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
 
             // se achar mais de um artigo, popula tabela com artigos
             if (totalArtigos > 0) {
-            for (let i = 1; i <= totalArtigos; i++) {
-                const element = await contrato.artigos(i)
-                
-                console.log('autor: ', )
+                for (let i = 1; i <= totalArtigos; i++) {
+                    const element = await contrato.artigos(i)
+                       
+                    console.log('autor: ', element.autor)
+                    console.log('endereco: ', contractAddress)
 
-                if (element.autor == contractAddress) {
-                    // adiciona trecho html na secao de contribuicoes 
-                    document.getElementById('artigosContribuicao').innerHTML += criaLinhaTabelaArtigos(element.titulo, true)
-                } else {
-                    document.getElementById('artigos').innerHTML += criaLinhaTabelaArtigos(element.titulo)
+                    if (element.autor == contractAddress) {
+                        // adiciona trecho html na secao de contribuicoes 
+                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, true)
+                    } else {
+                        artigosHTML += criaLinhaTabelaArtigos(element.titulo)
+                    }
+
+                    console.log('artigo: ', element)
+                    
                 }
+            }
 
-                console.log('artigo: ', element)
-                
-            }
-            
-            }
-        
+            artigosHTML += '</tbody></table>'
+            artigosContribuicaoHTML += '</tbody></table>'
+
+            document.getElementById('artigos').innerHTML = artigosHTML 
+            document.getElementById('artigosContribuicao').innerHTML = artigosContribuicaoHTML
         }
 
         async function adicionarArtigo() {
@@ -234,19 +243,9 @@
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="button-cell"></th>
-                                <th>Título</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <div id="artigos">
+                    <div id="artigos">
 
-                            </div>          
-                        </tbody>
-                    </table>
+                    </div>          
                 </div>
             </div>            
         </div>
@@ -259,19 +258,9 @@
                 </div>
                 <div class="panel-body flexbox content">
                     <div class="content-text content-table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="button-cell"></th>
-                                    <th>Título</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <div id="artigosContribuicao">
-    
-                                </div>          
-                            </tbody>
-                        </table>
+                        <div id="artigosContribuicao">
+
+                        </div>          
                     </div>
                 </div>            
             </div>
