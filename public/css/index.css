@@ -2,17 +2,9 @@
     display: flex;
 }
 
-
-
-.teste {
-    height: 80%;
-    width: 80%;
-    position: absolute;     
-}
-
 .img {
-    max-width: 20%;
-    margin-top: 3%;
+    max-width: 5%;
+    margin-top: 1%;
 }
 
 .img-fluid {
@@ -30,7 +22,7 @@
 
 .img-desc {
     font-size: 1.3rem;
-    margin: 5%;
+    margin: 1%;
     text-align: center;
 }
 
