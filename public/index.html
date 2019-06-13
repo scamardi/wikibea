@@ -23,8 +23,8 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contractAddress = "0x93e7a1d7bd807e9b4fd6598cA25beeD7b76c9AC4"
-        const myAddress = "0x5abF799Fb0897fbD1a5DB323C1BEF90dcFC7bd22"
+        const contractAddress = "0x7394474eD44a3C38ed430032ECA7682174708e15"
+        const myAddress = "0x20C2B2877E573C8798e442a1445372F25136e384"
         const abi = [
         {
         "constant": true,
@@ -173,12 +173,11 @@
         "type": "function"
         }
     ]
-        const eth = new Eth(new Eth.HttpProvider('http://127.0.0.1:7545'))
+        const eth = new Eth(new Eth.HttpProvider('HTTP://127.0.0.1:7545'))
         const params = {
             from: myAddress,
             to: myAddress,
-            value: '1',
-            gas: '1'
+            gas: '300000'
         }
         // instancia um contrato
         const contrato = eth.contract(abi).at(contractAddress)
@@ -234,7 +233,7 @@
             console.log('titulo artigo adicionado: ', titulo)
             console.log('corpo artigo adicionado: ', corpo)
 
-            contrato.adicionaArtigo(titulo, corpo, {from: myAddress})
+            contrato.adicionaArtigo(titulo, corpo, params)
             .then((err, result) => {
                 if (err) {
                     console.log('erro ao adicionar artigo: ', err)
@@ -266,12 +265,11 @@
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
-                              
+                    <input type="hidden">   
                     <div class="input-group">
                         <input type="text" id="tituloArtigo" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button" onclick="adicionarArtigo()">Salvar</button>
-                            <button class="btn btn-outline-secondary" type="button">Novo</button>
                         </div>
                     </div>
                     <div class="input-group">
