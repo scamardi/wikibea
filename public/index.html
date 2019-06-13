@@ -177,18 +177,16 @@
         const params = {
             from: myAddress,
             to: myAddress,
-            value: '1',
-            gas: '1'
+            gas: '1000000'
         }
+
+        //document.getElementById('enderecoUsuario').innerHTM = "<p>" + myAddress + "</p>"
+        
         // instancia um contrato
         const contrato = eth.contract(abi).at(contractAddress)
 
-        function criaLinhaTabelaArtigos(pageTitle, isAutor = false) {
-            if (isAutor) {
-                return '<tr><td><a href="#">Edit</a><a href="#">'+ pageTitle +'</a></td></tr>'
-            } else {
-                return '<tr><td><a href="#">'+ pageTitle +'</a></td></tr>'
-            }
+        function criaLinhaTabelaArtigos(tituloArtigo, idArtigo, isAutor = false) {
+            return '<tr><td>'+ idArtigo +'</td><td><a href="#" onclick="carregaArtigo('+ idArtigo +')">'+ tituloArtigo +'</a></td></tr>'
         }
         
         async function populaTabelaArtigos() {
@@ -197,8 +195,8 @@
             totalArtigos = totalArtigos[0].words[0]
             
             // cria tabela
-            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
-            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Título</th></tr></thead><tbody>'
+            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th></tr></thead><tbody>'
+            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th></tr></thead><tbody>'
 
             // se achar mais de um artigo, popula tabela com artigos
             if (totalArtigos > 0) {
@@ -206,13 +204,14 @@
                     const element = await contrato.artigos(i)
                        
                     //console.log('autor: ', element.autor)
-                    //console.log('endereco: ', contractAddress)
+                    //console.log('endereco: ', myAddress)
+                    //console.log(element.autor == myAddress)
 
-                    if (element.autor == contractAddress) {
+                    if (element.autor.toLowerCase() == myAddress.toLowerCase()) {
                         // adiciona trecho html na secao de contribuicoes 
-                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, true)
+                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, element.id, true)
                     } else {
-                        artigosHTML += criaLinhaTabelaArtigos(element.titulo)
+                        artigosHTML += criaLinhaTabelaArtigos(element.titulo, element.id)
                     }
 
                     //console.log('artigo: ', element)
@@ -234,7 +233,7 @@
             console.log('titulo artigo adicionado: ', titulo)
             console.log('corpo artigo adicionado: ', corpo)
 
-            contrato.adicionaArtigo(titulo, corpo, {from: myAddress})
+            contrato.adicionaArtigo(titulo, corpo, params)
             .then((err, result) => {
                 if (err) {
                     console.log('erro ao adicionar artigo: ', err)
@@ -244,6 +243,26 @@
             })
 
             
+        }
+
+        function carregaArtigo(idArtigo) {
+            contrato.artigos(idArtigo)
+                .then((result) => {
+                    id = result.id
+                    titulo = result.titulo
+                    corpo = result.corpo
+                    
+                    attrDesabilitado = document.createAttribute("disabled")
+                    document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
+                    //document.getElementById('corpoArtigo').setAttributeNode(attrDesabilitado)
+
+                    document.getElementById('tituloArtigo').value = titulo
+                    document.getElementById('corpoArtigo').value = corpo
+
+                })
+                .catch((err) => {
+                    console.log('erro ao tentar carregar artigo clicado: ', err)
+                })
         }
 
         populaTabelaArtigos()
@@ -320,7 +339,7 @@
             <footer>
                 <h4>
                     <center>
-                        <p>Endereço do Usuário: </p>
+                        <p>Endereço do Usuário: <div id="enderecoUsuario"></div></p>
                         <img src="icon.svg" class="img">
                         <p class="img-desc"><i>wikibea</i></p>
                     </center>
