@@ -39,12 +39,14 @@
       	// verifica se a pessoa que esta tentando alterar é o autor
       	require(artigos[_id].autor == msg.sender);
 
+        artigo storage artigoAlterado = artigos[_id];
+
       	// altera o artigo
-      	artigos[_id].titulo = _titulo;
-      	artigos[_id].corpo = _corpo;
+      	artigoAlterado.titulo = _titulo;
+      	artigoAlterado.corpo = _corpo;
 
       	// versiona o artigo
-      	artigos[_id].versao ++;
+      	artigoAlterado.versao ++;
       }
 
       function getArtigo(uint _id) public view returns (uint, string memory) {
@@ -53,12 +55,5 @@
 
       function getTotalArtigos() public view returns (uint) {
         return artigosCount;
-      }
-
-      function getArtigosDoAutor(string memory enderecoAutor) public view returns (uint, string memory) {
-        
-        for (uint i = 0; i < artigosCount; i++) {
-          
-        }
       }
 }

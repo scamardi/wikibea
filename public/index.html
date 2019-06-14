@@ -22,8 +22,8 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contractAddress = "0x7394474eD44a3C38ed430032ECA7682174708e15"
-        const myAddress = "0x20C2B2877E573C8798e442a1445372F25136e384"
+        const contractAddress = "0x845aFD95e8ee8500A8A14156f830C64226045e2D"
+        const myAddress = "0xf67f69777bAF3f1a77ce7BB66599281aB370AFB1"
         const abi = [
         {
         "constant": true,
@@ -202,10 +202,6 @@
             if (totalArtigos > 0) {
                 for (let i = 1; i <= totalArtigos; i++) {
                     const element = await contrato.artigos(i)
-                       
-                    //console.log('autor: ', element.autor)
-                    //console.log('endereco: ', myAddress)
-                    //console.log(element.autor == myAddress)
 
                     if (element.autor.toLowerCase() == myAddress.toLowerCase()) {
                         // adiciona trecho html na secao de contribuicoes 
@@ -227,22 +223,37 @@
         }
 
         function adicionarArtigo() {
+            id = document.getElementById('idArtigo').value
             titulo =  document.getElementById('tituloArtigo').value
             corpo =  document.getElementById('corpoArtigo').value
             
-            console.log('titulo artigo adicionado: ', titulo)
-            console.log('corpo artigo adicionado: ', corpo)
-
-            contrato.adicionaArtigo(titulo, corpo, params)
-            .then((err, result) => {
-                if (err) {
-                    console.log('erro ao adicionar artigo: ', err)
-                    return
-                }
-                console.log('recibo transacao: ', result)
-            })
-
+            console.log('id artigo: ', id)
+            console.log('titulo artigo: ', titulo)
+            console.log('corpo artigo: ', corpo)
             
+            if (id) {
+                // altera artigo
+                contrato.alterarArtigo(id, titulo, corpo, params)
+                    .then((result) => {
+                        console.log('recibo transacao alteração: ', result)
+
+                        populaTabelaArtigos()
+                            .then(() => { console.log('foi') })
+                            .catch((error) => { console.log('nao foi: ', error) })
+                    })
+                    .catch((error) => { console.log('erro ao alterar artigo: ', error) })
+            } else {
+                // adiciona artigo
+                contrato.adicionaArtigo(titulo, corpo, params)
+                    .then((result) => {
+                        console.log('recibo transacao criação: ', result)
+
+                        populaTabelaArtigos()
+                            .then(() => { console.log('foi') })
+                            .catch((error) => { console.log('nao foi: ', error) })
+                    })
+                    .catch((error) => { console.log('erro ao adicionar artigo: ', error) })
+            }            
         }
 
         function carregaArtigo(idArtigo) {
@@ -251,11 +262,15 @@
                     id = result.id
                     titulo = result.titulo
                     corpo = result.corpo
+                    autor = result.autor
                     
-                    attrDesabilitado = document.createAttribute("disabled")
-                    document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
-                    //document.getElementById('corpoArtigo').setAttributeNode(attrDesabilitado)
-
+                    if (autor.toLowerCase() == myAddress.toLowerCase()) {
+                        attrDesabilitado = document.createAttribute("disabled")
+                        document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
+                        //document.getElementById('corpoArtigo').setAttributeNode(attrDesabilitado)
+                    }
+                    
+                    document.getElementById('idArtigo').value = id
                     document.getElementById('tituloArtigo').value = titulo
                     document.getElementById('corpoArtigo').value = corpo
 
@@ -264,6 +279,7 @@
                     console.log('erro ao tentar carregar artigo clicado: ', err)
                 })
         }
+
 
         populaTabelaArtigos()
             .then(() => { console.log('foi') })
@@ -285,7 +301,7 @@
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
-                    <input type="hidden">   
+                    <input type="hidden" id="idArtigo">   
                     <div class="input-group">
                         <input type="text" id="tituloArtigo" class="form-control" placeholder="Título do Artigo" aria-label="Recipient's username with two button addons" aria-describedby="button-addon4">
                         <div class="input-group-append">
