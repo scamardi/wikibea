@@ -264,10 +264,22 @@
                     corpo = result.corpo
                     autor = result.autor
                     
-                    if (autor.toLowerCase() == myAddress.toLowerCase()) {
-                        attrDesabilitado = document.createAttribute("disabled")
-                        document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
+                    attrDesabilitado = document.createAttribute("disabled")
+
+                    console.log("autor: ", autor)
+                    console.log("myadrress: ", myAddress)
+                    console.log("eval: ", (!autor.toLowerCase() != myAddress.toLowerCase()))
+                    
+                    if (autor.toLowerCase() != myAddress.toLowerCase()) {
+                        console.log('set')
+                        //document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
                         //document.getElementById('corpoArtigo').setAttributeNode(attrDesabilitado)
+                        $("#tituloArtigo").prop("disabled", true)
+                        $("#corpoArtigo").prop("disabled", true)
+                    } else {
+                        console.log('remove')
+                        $("#tituloArtigo").prop("disabled", false)
+                        $("#corpoArtigo").prop("disabled", false)
                     }
                     
                     document.getElementById('idArtigo').value = id
