@@ -22,8 +22,8 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contractAddress = "0x7394474eD44a3C38ed430032ECA7682174708e15"
-        const myAddress = "0x20C2B2877E573C8798e442a1445372F25136e384"
+        const contractAddress = "0x34D99D5Bd7c03d5c2894Ba8458e43083c371a61A"
+        const myAddress = "0xde224C4D3A0E12618878901789F72c69ebAdEddE"
         const abi = [
         {
         "constant": true,
@@ -185,8 +185,8 @@
         // instancia um contrato
         const contrato = eth.contract(abi).at(contractAddress)
 
-        function criaLinhaTabelaArtigos(tituloArtigo, idArtigo, isAutor = false) {
-            return '<tr><td>'+ idArtigo +'</td><td><a href="#" onclick="carregaArtigo('+ idArtigo +')">'+ tituloArtigo +'</a></td></tr>'
+        function criaLinhaTabelaArtigos(tituloArtigo, idArtigo, versaoArtigo, isAutor = false) {
+            return '<tr><td>'+ idArtigo +'</td><td><a href="#" onclick="carregaArtigo('+ idArtigo +')">'+ tituloArtigo +'</a></td><td>' + versaoArtigo + '</td></tr>'
         }
         
         async function populaTabelaArtigos() {
@@ -195,9 +195,9 @@
             totalArtigos = totalArtigos[0].words[0]
             
             // cria tabela
-            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th></tr></thead><tbody>'
-            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th></tr></thead><tbody>'
-
+            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th><th scope="col">Versão</th></tr></thead><tbody>'
+            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th><th scope="col">Versão</th></tr></thead><tbody>'
+            
             // se achar mais de um artigo, popula tabela com artigos
             if (totalArtigos > 0) {
                 for (let i = 1; i <= totalArtigos; i++) {
@@ -209,9 +209,9 @@
 
                     if (element.autor.toLowerCase() == myAddress.toLowerCase()) {
                         // adiciona trecho html na secao de contribuicoes 
-                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, element.id, true)
+                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, element.id, element.versao, true)
                     } else {
-                        artigosHTML += criaLinhaTabelaArtigos(element.titulo, element.id)
+                        artigosHTML += criaLinhaTabelaArtigos(element.titulo, element.id, element.versao)
                     }
 
                     //console.log('artigo: ', element)
@@ -221,7 +221,7 @@
 
             artigosHTML += '</tbody></table>'
             artigosContribuicaoHTML += '</tbody></table>'
-
+            
             document.getElementById('artigos').innerHTML = artigosHTML 
             document.getElementById('artigosContribuicao').innerHTML = artigosContribuicaoHTML
         }

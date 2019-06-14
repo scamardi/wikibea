@@ -32,7 +32,7 @@
       	// 
         artigosCount ++;
       	
-        artigos[artigosCount] = artigo(artigosCount, _titulo, _corpo, msg.sender, 0);
+        artigos[artigosCount] = artigo(artigosCount, _titulo, _corpo, msg.sender, 1);
       }
 
       function alterarArtigo (uint _id, string memory _titulo, string memory _corpo) public {
