@@ -22,8 +22,8 @@
 
     <script>
         // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
-        const contractAddress = "0x9D54BC8Dda9A5041a9E7af8b57c87f65c9e5355A"
-        const myAddress = "0xde224C4D3A0E12618878901789F72c69ebAdEddE"
+        const contractAddress = "0x93e7a1d7bd807e9b4fd6598cA25beeD7b76c9AC4"
+        const myAddress = "0xf67f69777bAF3f1a77ce7BB66599281aB370AFB1"
         const abi = [
         {
         "constant": true,
@@ -263,28 +263,20 @@
                     titulo = result.titulo
                     corpo = result.corpo
                     autor = result.autor
-                    
-                    attrDesabilitado = document.createAttribute("disabled")
+                    versao = result.versao
 
-                    console.log("autor: ", autor)
-                    console.log("myadrress: ", myAddress)
-                    console.log("eval: ", (!autor.toLowerCase() != myAddress.toLowerCase()))
-                    
                     if (autor.toLowerCase() != myAddress.toLowerCase()) {
-                        console.log('set')
-                        //document.getElementById('tituloArtigo').setAttributeNode(attrDesabilitado)
-                        //document.getElementById('corpoArtigo').setAttributeNode(attrDesabilitado)
                         $("#tituloArtigo").prop("disabled", true)
                         $("#corpoArtigo").prop("disabled", true)
                     } else {
-                        console.log('remove')
                         $("#tituloArtigo").prop("disabled", false)
                         $("#corpoArtigo").prop("disabled", false)
                     }
-                    
+
                     document.getElementById('idArtigo').value = id
                     document.getElementById('tituloArtigo').value = titulo
                     document.getElementById('corpoArtigo').value = corpo
+                    document.getElementById('versaoArtigo').value = versao
 
                 })
                 .catch((err) => {
@@ -292,6 +284,16 @@
                 })
         }
 
+        function novoArtigo() {
+            // limpa todos os campos do formulario
+            document.getElementById('idArtigo').value = ''
+            document.getElementById('tituloArtigo').value = ''
+            document.getElementById('corpoArtigo').value = ''
+            document.getElementById('versaoArtigo').value = ''
+
+            $("#tituloArtigo").prop("disabled", false)
+            $("#corpoArtigo").prop("disabled", false)
+        }
 
         populaTabelaArtigos()
             .then(() => { console.log('foi') })
@@ -309,7 +311,7 @@
     <div class="flexbox general-margin"> 
         <div class="panel panel-warning table-panel">
             <div class="panel-heading">
-                <h3 class="panel-header">Artigo<button class="btn btn-outline-secondary" type="button" style="float:right">Novo</button></h3>
+                <h3 class="panel-header">Artigo<button class="btn btn-outline-secondary" type="button" style="float:right" onclick="novoArtigo()" >Novo</button></h3>
             </div>
             <div class="panel-body flexbox content">
                 <div class="content-text content-table">
@@ -327,7 +329,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Versão</span>
                         </div>
-                        <input type="text" class="form-control">
+                        <input type="text" id="versaoArtigo" class="form-control" disabled>
+                    
                     </div>
                     <div class="input-group-append" style="float:right">
                             <button class="btn btn-outline-secondary" type="button" onclick="adicionarArtigo()">Salvar</button>
