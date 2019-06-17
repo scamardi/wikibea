@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
+
+    <script>
+        // variaveis necessárias para a conexao com a blockchain (address, abi e eth)
+        const contractAddress = "0x93e7a1d7bd807e9b4fd6598cA25beeD7b76c9AC4"
+        const myAddress = "0xf67f69777bAF3f1a77ce7BB66599281aB370AFB1"
+        const abi = [
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "artigosCount",
+        "outputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+            "name": "",
+            "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+        ],
+        "name": "artigos",
+        "outputs": [
+            {
+            "name": "id",
+            "type": "uint256"
+            },
+            {
+            "name": "titulo",
+            "type": "string"
+            },
+            {
+            "name": "corpo",
+            "type": "string"
+            },
+            {
+            "name": "autor",
+            "type": "address"
+            },
+            {
+            "name": "versao",
+            "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+        },
+        {
+        "constant": false,
+        "inputs": [
+            {
+            "name": "_titulo",
+            "type": "string"
+            },
+            {
+            "name": "_corpo",
+            "type": "string"
+            }
+        ],
+        "name": "adicionaArtigo",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+        },
+        {
+        "constant": false,
+        "inputs": [
+            {
+            "name": "_id",
+            "type": "uint256"
+            },
+            {
+            "name": "_titulo",
+            "type": "string"
+            },
+            {
+            "name": "_corpo",
+            "type": "string"
+            }
+        ],
+        "name": "alterarArtigo",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [
+            {
+            "name": "_id",
+            "type": "uint256"
+            }
+        ],
+        "name": "getArtigo",
+        "outputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            },
+            {
+            "name": "",
+            "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        },
+        {
+        "constant": true,
+        "inputs": [],
+        "name": "getTotalArtigos",
+        "outputs": [
+            {
+            "name": "",
+            "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+        }
+    ]
+        
+        const eth = new Eth(new Eth.HttpProvider('HTTP://127.0.0.1:7545'))
+        const params = {
+            from: myAddress,
+            to: myAddress,
+            gas: '300000'
+        }
+
+        //document.getElementById('enderecoUsuario').innerHTM = "<p>" + myAddress + "</p>"
+        
+        // instancia um contrato
+        const contrato = eth.contract(abi).at(contractAddress)
+
+        function criaLinhaTabelaArtigos(tituloArtigo, idArtigo, versaoArtigo, isAutor = false) {
+            return '<tr><td>'+ idArtigo +'</td><td><a href="#" onclick="carregaArtigo('+ idArtigo +')">'+ tituloArtigo +'</a></td><td>' + versaoArtigo + '</td></tr>'
+        }
+        
+        async function populaTabelaArtigos() {
+            // obtem o total de artigos
+            let totalArtigos = await contrato.getTotalArtigos()
+            totalArtigos = totalArtigos[0].words[0]
+            
+            // cria tabela
+            let artigosHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th><th scope="col">Versão</th></tr></thead><tbody>'
+            let artigosContribuicaoHTML = '<table class="table"><thead><tr><th scope="col">Id</th><th scope="col">Título</th><th scope="col">Versão</th></tr></thead><tbody>'
+            
+            // se achar mais de um artigo, popula tabela com artigos
+            if (totalArtigos > 0) {
+                for (let i = 1; i <= totalArtigos; i++) {
+                    const element = await contrato.artigos(i)
+
+                    if (element.autor.toLowerCase() == myAddress.toLowerCase()) {
+                        // adiciona trecho html na secao de contribuicoes 
+                        artigosContribuicaoHTML += criaLinhaTabelaArtigos(element.titulo, element.id, element.versao, true)
+                    } else {
+                        artigosHTML += criaLinhaTabelaArtigos(element.titulo, element.id, element.versao)
+                    }
+
+                    //console.log('artigo: ', element)
+                    
+                }
+            }
+
+            artigosHTML += '</tbody></table>'
+            artigosContribuicaoHTML += '</tbody></table>'
+            
+            document.getElementById('artigos').innerHTML = artigosHTML 
+            document.getElementById('artigosContribuicao').innerHTML = artigosContribuicaoHTML
+        }
+
+        function adicionarArtigo() {
+            id = document.getElementById('idArtigo').value
+            titulo =  document.getElementById('tituloArtigo').value
+            corpo =  document.getElementById('corpoArtigo').value
+            
+            console.log('id artigo: ', id)
+            console.log('titulo artigo: ', titulo)
+            console.log('corpo artigo: ', corpo)
+            
+            if (id) {
+                // altera artigo
+                contrato.alterarArtigo(id, titulo, corpo, params)
+                    .then((result) => {
+                        console.log('recibo transacao alteração: ', result)
+
+                        populaTabelaArtigos()
+                            .then(() => { console.log('foi') })
+                            .catch((error) => { console.log('nao foi: ', error) })
+                    })
+                    .catch((error) => { console.log('erro ao alterar artigo: ', error) })
+            } else {
+                // adiciona artigo
+                contrato.adicionaArtigo(titulo, corpo, params)
+                    .then((result) => {
+                        console.log('recibo transacao criação: ', result)
+
+                        populaTabelaArtigos()
+                            .then(() => { console.log('foi') })
+                            .catch((error) => { console.log('nao foi: ', error) })
+                    })
+                    .catch((error) => { console.log('erro ao adicionar artigo: ', error) })
+            }            
+        }
+
+        function carregaArtigo(idArtigo) {
+            contrato.artigos(idArtigo)
+                .then((result) => {
+                    id = result.id
+                    titulo = result.titulo
+                    corpo = result.corpo
+                    autor = result.autor
+                    versao = result.versao
+
+                    if (autor.toLowerCase() != myAddress.toLowerCase()) {
+                        $("#tituloArtigo").prop("disabled", true)
+                        $("#corpoArtigo").prop("disabled", true)
+                    } else {
+                        $("#tituloArtigo").prop("disabled", false)
+                        $("#corpoArtigo").prop("disabled", false)
+                    }
+
+                    document.getElementById('idArtigo').value = id
+                    document.getElementById('tituloArtigo').value = titulo
+                    document.getElementById('corpoArtigo').value = corpo
+                    document.getElementById('versaoArtigo').value = versao
+
+                })
+                .catch((err) => {
+                    console.log('erro ao tentar carregar artigo clicado: ', err)
+                })
+        }
+
+        function novoArtigo() {
+            // limpa todos os campos do formulario
+            document.getElementById('idArtigo').value = ''
+            document.getElementById('tituloArtigo').value = ''
+            document.getElementById('corpoArtigo').value = ''
+            document.getElementById('versaoArtigo').value = ''
+
+            $("#tituloArtigo").prop("disabled", false)
+            $("#corpoArtigo").prop("disabled", false)
+        }
+
+        populaTabelaArtigos()
+            .then(() => { console.log('foi') })
+            .catch((error) => { console.log('nao foi: ', error) })
+        
+    </script>
+
+</head>
+<body class="body">
+    <nav class="nav-margin">
+        <img src="logo.png" class="img">
+        <h1 class="input-group">wikibea</h1>
+    </nav>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Artigo<button class="btn btn-outline-secondary" type="button" style="float:right" onclick="novoArtigo()" >Novo</button></h3>
+            </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <input type="hidden" id="idArtigo">   
+                    <div class="input-group">
+                        <input type="text" id="tituloArtigo" class="form-control" placeholder="Título do Artigo" aria-describedby="button-addon4">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Corpo do Artigo</span>
+                        </div>
+                        <textarea id="corpoArtigo" class="form-control" aria-label="With textarea"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Versão</span>
+                        </div>
+                        <input type="text" id="versaoArtigo" class="form-control" disabled>
+                    
+                    </div>
+                    <div class="input-group-append" style="float:right">
+                            <button class="btn btn-outline-secondary" type="button" onclick="adicionarArtigo()">Salvar</button>
+                    </div>
+                </div>
+            </div>            
+
+        </div>
+    </div>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Todos os Artigos</h3>
+            </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <div id="artigos">
+
+                    </div>          
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <div class="flexbox general-margin"> 
+        <div class="panel panel-warning table-panel">
+            <div class="panel-heading">
+                <h3 class="panel-header">Contribuições</h3>
+            </div>
+            <div class="panel-body flexbox content">
+                <div class="content-text content-table">
+                    <div id="artigosContribuicao">
+
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+        <div>
+            <footer>
+                <h4>
+                    <center>
+                        <p>Endereço do Usuário: <div id="enderecoUsuario"></div></p>
+                        <img src="icon.svg" class="img">
+                        <p class="img-desc"><i>wikibea</i></p>
+                    </center>
+                </h4>
+            </footer>
+        </div>
+</body>
+
+
+</html>

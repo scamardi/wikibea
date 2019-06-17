@@ -1,0 +1,164 @@
+.flexbox {
+    display: flex;
+}
+
+.img {
+    max-width: 5%;
+    margin-top: 1%;
+}
+
+.img-fluid {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+}
+.body {
+    background-color: #FDD8AB;
+}
+
+.content-text {
+    margin: 3%;
+    font-size: 1.5rem;
+}
+
+.img-desc {
+    font-size: 1.3rem;
+    margin: 1%;
+    text-align: center;
+}
+
+.general-margin {
+    margin: 0% 3% 3% 3%;
+}
+
+.nav-margin {
+    margin: 1% 3%;
+}
+
+.nav-link {
+    color: white;
+    background-color: #F8AE45;
+}
+
+.nav-link:hover {
+    background-color: orange !important; 
+    color: white;
+}
+
+.nav-margin ul li {
+    font-size: 2rem;
+    margin-right: 1%;
+}
+
+.content {
+    margin-right: 3%;
+}
+
+.table-panel {
+    width: 100%;
+}
+
+.page-title-cell {
+    vertical-align: middle !important;
+}
+
+.content-table {
+    width: 100%;
+}
+
+.button {
+    background-color: #F5DD19;
+    color: white;
+    font-size: 1.5rem;
+    border: transparent;
+    border-radius: 10%;
+    padding: 8% 15%;
+    font-weight: bold;
+}
+
+.button a, button a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: yellow;
+}
+
+.button-cell {
+    width: 10%;
+}
+
+.input-group {
+    margin-bottom: 2%;
+    font-size: 1.5rem;
+}
+
+.input-group-text {
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1.3rem !important;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1.3rem !important;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1.3rem !important;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.submit-button {
+    padding: 20%;
+}
+
+.page-title, .page-content {
+    width: 100%;
+}
+
+.page-title-cell a {
+    text-decoration: none;
+    color: black;
+}
+
+.page-title-cell a:hover {
+    color: black;
+}
